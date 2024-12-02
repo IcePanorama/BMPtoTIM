@@ -1,4 +1,5 @@
 #include "bitmap_img.hpp"
+#include "utils.hpp"
 
 #include <format>
 #include <iostream>
@@ -13,6 +14,7 @@ BitmapImage::BitmapImage (const std::string &filename)
         std::format ("Error opening file, {}", filename));
 
   this->validate_file (filename);
+  this->size = read_uint32_from_file (file);
 }
 
 void
