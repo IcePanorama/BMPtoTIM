@@ -14,7 +14,18 @@ BitmapImage::BitmapImage (const std::string &filename)
         std::format ("Error opening file, {}", filename));
 
   this->validate_file (filename);
-  this->size = read_uint32_from_file (file);
+
+  this->file.seekg (BitmapImage::DATA_START_OFFSET_LOC);
+  this->data_start = read_uint32_from_file (this->file);
+
+  this->file.seekg (BitmapImage::BITMAP_DIMENSIONS_LOC);
+  this->width = read_uint32_from_file (this->file);
+  this->height = read_uint32_from_file (this->file);
+
+  this->row_size
+      = static_cast<uint32_t> (
+            (BitmapImage::BITS_PER_PIXEL * this->width + 31.0) / 32.0)
+        * 4;
 }
 
 void
