@@ -9,6 +9,7 @@ class BitmapImage
   const std::string filename_;
   std::ifstream file;
 
+  /** Verifies that the first two bytes of the file are BM (0x424D). */
   void validate_file (const std::string &filename);
 
 public:
