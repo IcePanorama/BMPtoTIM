@@ -6,13 +6,13 @@
 #include <stdexcept>
 
 BitmapImage::BitmapImage (const std::string &filename)
-    : filename_ (filename), file (filename_, std::ios::binary)
+    : file (filename, std::ios::binary), filename_ (filename)
 {
   if (!file.is_open ())
     throw std::runtime_error (
         std::format ("Error opening file, {}", filename));
 
-  this->validate_file (filename);
+  this->validate_file ();
 
   this->file.seekg (BitmapImage::DATA_START_OFFSET_LOC);
   this->data_start = read_uint32_from_file (this->file);
@@ -28,17 +28,17 @@ BitmapImage::BitmapImage (const std::string &filename)
 }
 
 void
-BitmapImage::validate_file (const std::string &filename)
+BitmapImage::validate_file ()
 {
   std::string identifier (2, '\0');
   this->file.read (identifier.data (), identifier.size ());
   if (this->file.fail ())
     throw std::runtime_error (
-        std::format ("Error reading from file, {}\n", filename));
+        std::format ("Error reading from file, {}\n", this->filename_));
 
   if (identifier != "BM")
-    throw std::runtime_error (
-        std::format ("Error: The file, {}, is not a bitmap image.", filename));
+    throw std::runtime_error (std::format (
+        "Error: The file, {}, is not a bitmap image.", this->filename_));
 }
 
 void

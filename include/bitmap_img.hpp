@@ -15,7 +15,6 @@ class BitmapImage
   static constexpr uint8_t BITMAP_DIMENSIONS_LOC = 0x12;
   static constexpr uint8_t BYTES_PER_PIXEL = 3;
 
-  const std::string filename_;
   std::ifstream file;
   /**
    *  The offset to where the pixel array can be found.
@@ -31,14 +30,16 @@ class BitmapImage
    */
   uint32_t row_size;
 
-  std::unordered_map<Color, uint8_t, ColorHasher_s> color_table;
-  std::vector<std::vector<uint8_t> > pixel_array;
-
   /** Verifies that the first two bytes of the file are BM (0x424D). */
-  void validate_file (const std::string &filename);
+  void validate_file (void);
   void process_pixel_array (void);
 
 public:
+  // FIXME: make TIM a friend
+  const std::string filename_;
+  std::unordered_map<Color, uint8_t, ColorHasher_s> color_table;
+  std::vector<std::vector<uint8_t> > pixel_array;
+
   BitmapImage (const std::string &filename);
 };
 
