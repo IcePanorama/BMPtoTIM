@@ -1,15 +1,9 @@
 #include "bitmap_img.hpp"
-#include "color.hpp"
 #include "utils.hpp"
 
-#include <cstdint>
-#include <cstdio>
 #include <format>
 #include <iostream>
 #include <stdexcept>
-#include <string>
-#include <unordered_map>
-#include <utility>
 
 BitmapImage::BitmapImage (const std::string &filename)
     : filename_ (filename), file (filename_, std::ios::binary)
@@ -50,7 +44,6 @@ BitmapImage::validate_file (const std::string &filename)
 void
 BitmapImage::process_pixel_array (void)
 {
-  std::unordered_map<Color, uint8_t, ColorHasher_s> color_table;
   this->file.seekg (this->data_start);
 
   uint32_t padding
@@ -63,12 +56,12 @@ BitmapImage::process_pixel_array (void)
         {
           Color c = read_color_from_file (this->file);
 
-          auto got = color_table.find (c);
-          if (got == color_table.end ())
-            color_table.insert (std::make_pair (c, color_table.size ()));
+          auto got = this->color_table.find (c);
+          if (got == this->color_table.end ())
+            this->color_table.insert (
+                std::make_pair (c, this->color_table.size ()));
 
-          it->push_back (color_table.at (c));
-          std::cout << std::format ("{:02X}\n", color_table.at (c));
+          it->push_back (this->color_table.at (c));
         }
 
       this->file.seekg (padding, std::ios_base::cur);

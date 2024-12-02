@@ -1,9 +1,12 @@
 #ifndef _BITMAP_IMAGE_HPP_
 #define _BITMAP_IMAGE_HPP_
 
+#include "color.hpp"
+
 #include <cstdint>
 #include <fstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 class BitmapImage
@@ -28,6 +31,7 @@ class BitmapImage
    */
   uint32_t row_size;
 
+  std::unordered_map<Color, uint8_t, ColorHasher_s> color_table;
   std::vector<std::vector<uint8_t> > pixel_array;
 
   /** Verifies that the first two bytes of the file are BM (0x424D). */
