@@ -27,10 +27,12 @@ set(CODE_STYLE GNU)
 
 set(INCL_DIR "${PROJECT_SOURCE_DIR}/include")
 set(INCL_FILES
+    "${INCL_DIR}/bitmap_img.hpp"
 )
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 set(SRC_FILES
+    "${SRC_DIR}/bitmap_img.cpp"
     "${SRC_DIR}/main.cpp"
 )
 
@@ -44,7 +46,7 @@ add_custom_target(format
 
 # Test target
 add_custom_target(test
-    COMMAND valgrind --leak-check=yes ./${PROJECT_NAME} AUTOGRPH.BM AUTOGRPH.PAL
+    COMMAND valgrind --leak-check=yes ./${PROJECT_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Testing for memory leaks with Valgrind."
 )
