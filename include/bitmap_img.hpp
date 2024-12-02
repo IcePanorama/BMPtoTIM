@@ -4,14 +4,20 @@
 #include <cstdint>
 #include <fstream>
 #include <string>
+#include <vector>
 
 class BitmapImage
 {
   static constexpr uint8_t DATA_START_OFFSET_LOC = 0x0A;
   static constexpr uint8_t BITMAP_DIMENSIONS_LOC = 0x12;
-  static constexpr uint8_t BITS_PER_PIXEL = 24;
+  static constexpr uint8_t BYTES_PER_PIXEL = 3;
+
   const std::string filename_;
   std::ifstream file;
+  /**
+   *  The offset to where the pixel array can be found.
+   *  @see: https://en.wikipedia.org/wiki/BMP_file_format#Bitmap_file_header
+   */
   uint32_t data_start;
   uint32_t width;
   uint32_t height;
@@ -22,8 +28,11 @@ class BitmapImage
    */
   uint32_t row_size;
 
+  std::vector<std::vector<uint8_t> > pixel_array;
+
   /** Verifies that the first two bytes of the file are BM (0x424D). */
   void validate_file (const std::string &filename);
+  void process_pixel_array (void);
 
 public:
   BitmapImage (const std::string &filename);
