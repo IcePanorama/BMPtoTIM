@@ -1,6 +1,7 @@
 # Project specific
 build/*
 *.json
+BMPtoTIM
 
 # Prerequisites
 *.d
