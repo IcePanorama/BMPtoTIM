@@ -13,7 +13,7 @@ main (void)
   try
     {
       BitmapImage tmp (input_filename);
-      TIMImage tim (tmp.filename_, tmp.color_table);
+      TIMImage tim (tmp.filename_, tmp.color_table, 0, 1, 2, 3);
     }
   catch (const std::runtime_error &e)
     {
