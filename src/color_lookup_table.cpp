@@ -1,9 +1,6 @@
 #include "color_lookup_table.hpp"
 #include "utils.hpp"
 
-#include <format>
-#include <iostream>
-
 ColorLookupTable::ColorLookupTable (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table)
     : color_table_ (color_table), x_pos_ (0), y_pos_ (1), width (16),
@@ -64,11 +61,8 @@ ColorLookupTable::create_clut_entries (std::ofstream &fptr)
           const uint16_t entry = r | (g << 5) | (b << 10);
           fptr.write (reinterpret_cast<const char *> (&entry), sizeof (entry));
         }
-      std::cout << std::format ("{:02X} {:02X} {:02X}\n", c.red_value_,
-                                c.green_value_, c.blue_value_);
       cnt++;
     }
 
-  std::cout << std::format ("{:d}\n", cnt);
   fptr.seekp (0x2 * (0xF - cnt), std::ios::cur);
 }

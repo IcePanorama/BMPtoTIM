@@ -9,7 +9,7 @@
 
 class ColorLookupTable
 {
-  /** see: pg. 183. */
+  /** see: pg. 183, "TIM: Screen Image Data", in 'File Formats'. */
   static constexpr uint32_t CLUT_HEADER_SIZE = sizeof (uint32_t) * 3;
 
   const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table_;

@@ -7,11 +7,13 @@
 
 #include "color.hpp"
 #include "color_lookup_table.hpp"
+#include "pixel_data.hpp"
 
 #include <cstdint>
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class TIMImage
 {
@@ -27,6 +29,7 @@ class TIMImage
   std::ofstream file;
 
   ColorLookupTable clut;
+  PixelData pixel_data;
 
   /**
    *  Makes the given filename comform to the 8.3 standard, changes the file
@@ -39,7 +42,9 @@ class TIMImage
 public:
   TIMImage (
       const std::string &filename,
-      const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table);
+      const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
+      const std::vector<std::vector<uint8_t> > &pixel_array, uint16_t width,
+      uint16_t height);
 };
 
 #endif /* _SCREEN_IMAGE_DATA_HPP_ */

@@ -21,8 +21,6 @@ class BitmapImage
    *  @see: https://en.wikipedia.org/wiki/BMP_file_format#Bitmap_file_header
    */
   uint32_t data_start;
-  uint32_t width;
-  uint32_t height;
   /**
    *  "the total number of bytes necessary to store one row of pixels," rounded
    *  up to a multiple of 4 bytes. ((BPP * width) / 32) * 4.
@@ -39,6 +37,8 @@ public:
   const std::string filename_;
   std::unordered_map<Color, uint8_t, ColorHasher_s> color_table;
   std::vector<std::vector<uint8_t> > pixel_array;
+  uint32_t width;
+  uint32_t height;
 
   BitmapImage (const std::string &filename);
 };

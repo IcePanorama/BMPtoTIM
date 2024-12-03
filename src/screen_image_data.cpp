@@ -7,8 +7,11 @@
 
 TIMImage::TIMImage (
     const std::string &filename,
-    const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table)
-    : filename_ (filename), file (), clut (color_table)
+    const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
+    const std::vector<std::vector<uint8_t> > &pixel_array, uint16_t width,
+    uint16_t height)
+    : filename_ (filename), file (), clut (color_table),
+      pixel_data (color_table, pixel_array, (width >> 2), height)
 {
   format_filename ();
 
@@ -20,7 +23,9 @@ TIMImage::TIMImage (
   std::cout << color_table.size () << std::endl;
   this->create_file_header ();
   this->export_file_flags ();
+
   this->clut.export_clut (this->file);
+  this->pixel_data.export_pixel_data (this->file);
 }
 
 void
