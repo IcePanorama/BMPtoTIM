@@ -1,6 +1,7 @@
 #include "bitmap_img.hpp"
 #include "screen_image_data.hpp"
 
+#include <format>
 #include <iostream>
 #include <stdexcept>
 #include <string>

@@ -7,7 +7,7 @@ PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
     uint16_t height)
-    : color_table_ (color_table), data_ (data), x_pos_ (2), y_pos_ (3),
+    : color_table_ (color_table), data_ (data), x_pos_ (320), y_pos_ (1),
       width_ (width), height_ (height)
 {
 }

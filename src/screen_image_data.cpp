@@ -20,7 +20,6 @@ TIMImage::TIMImage (
     throw std::runtime_error (
         std::format ("Error opening output file, {}\n", this->filename_));
 
-  std::cout << color_table.size () << std::endl;
   this->create_file_header ();
   this->export_file_flags ();
 
