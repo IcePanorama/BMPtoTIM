@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -88,9 +87,9 @@ ColorLookupTable::create_clut_entries (std::ofstream &fptr)
         }
       else
         {
-          const uint8_t r = u8_to_u5 (color.red_value_);
-          const uint8_t g = u8_to_u5 (color.green_value_);
-          const uint8_t b = u8_to_u5 (color.blue_value_);
+          const uint8_t r = u8_to_u5 (color.get_red_value ());
+          const uint8_t g = u8_to_u5 (color.get_green_value ());
+          const uint8_t b = u8_to_u5 (color.get_blue_value ());
           const uint16_t entry = r | (g << 5) | (b << 10);
           fptr.write (reinterpret_cast<const char *> (&entry), sizeof (entry));
         }

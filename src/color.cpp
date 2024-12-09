@@ -13,3 +13,21 @@ Color::operator== (const Color &other) const
          && this->green_value_ == other.green_value_
          && this->blue_value_ == other.blue_value_;
 }
+
+uint8_t
+Color::get_red_value (void) const
+{
+  return this->red_value_;
+}
+
+uint8_t
+Color::get_green_value (void) const
+{
+  return this->green_value_;
+}
+
+uint8_t
+Color::get_blue_value (void) const
+{
+  return this->blue_value_;
+}

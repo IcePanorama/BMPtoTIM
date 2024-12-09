@@ -5,13 +5,20 @@
 
 class Color
 {
-public:
   uint8_t red_value_;
   uint8_t green_value_;
   uint8_t blue_value_;
 
+  friend struct ColorHasher_s;
+
+public:
   Color (uint8_t red_value, uint8_t green_value, uint8_t blue_value);
+
   bool operator== (const Color &other) const;
+
+  uint8_t get_red_value (void) const;
+  uint8_t get_green_value (void) const;
+  uint8_t get_blue_value (void) const;
 };
 
 struct ColorHasher_s
