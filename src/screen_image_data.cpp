@@ -2,9 +2,12 @@
 
 #include <algorithm>
 #include <format>
-#include <iostream>
 #include <stdexcept>
 
+/*
+ *  Width is div'd by 4 due to the output being in 4 bpp mode, this will need
+ *  to be updated in the future to make this more flexible.
+ */
 TIMImage::TIMImage (
     const std::string &filename,
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
