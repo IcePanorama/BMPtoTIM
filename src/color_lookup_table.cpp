@@ -22,7 +22,6 @@ ColorLookupTable::export_clut (std::ofstream &fptr)
   this->create_clut_entries (fptr);
 }
 
-// FIXME: add error checking around file i/o
 void
 ColorLookupTable::export_clut_header (std::ofstream &fptr)
 {
@@ -46,13 +45,16 @@ ColorLookupTable::export_clut_header (std::ofstream &fptr)
   const uint16_t clut_height = 1;
   fptr.write (reinterpret_cast<const char *> (&clut_height),
               sizeof (clut_height));
+
+  if (fptr.fail ())
+    throw std::runtime_error ("Error exporting CLUT header.");
 }
 
-// FIXME: add error checking around file i/o
 void
 ColorLookupTable::create_clut_entries (std::ofstream &fptr)
 {
   static const Color TRANSPARENCY (0xFF, 0x00, 0xFF);
+  constexpr const char *ERR_MSG = "Error exporting CLUT entries.";
 
   // Extract key-values from color table
   std::vector<Color> keys;
@@ -86,6 +88,8 @@ ColorLookupTable::create_clut_entries (std::ofstream &fptr)
       if (color == TRANSPARENCY)
         {
           fptr.seekp (0x2, std::ios::cur);
+          if (fptr.fail ())
+            throw std::runtime_error (ERR_MSG);
         }
       else
         {
@@ -94,7 +98,11 @@ ColorLookupTable::create_clut_entries (std::ofstream &fptr)
           const uint8_t b = u8_to_u5 (color.get_blue_value ());
           const uint16_t entry = r | (g << 5) | (b << 10);
           fptr.write (reinterpret_cast<const char *> (&entry), sizeof (entry));
+          if (fptr.fail ())
+            throw std::runtime_error (ERR_MSG);
         }
     }
   fptr.seekp (0x2 * (0x10 - cnt), std::ios::cur);
+  if (fptr.fail ())
+    throw std::runtime_error (ERR_MSG);
 }
