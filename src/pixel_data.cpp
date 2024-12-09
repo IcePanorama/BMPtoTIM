@@ -1,5 +1,7 @@
 #include "pixel_data.hpp"
 
+#include <stdexcept>
+
 PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
@@ -19,7 +21,6 @@ PixelData::export_pixel_data (std::ofstream &fptr)
   this->export_data (fptr);
 }
 
-// FIXME: add error checking for file i/o
 void
 PixelData::export_header (std::ofstream &fptr)
 {
@@ -38,9 +39,12 @@ PixelData::export_header (std::ofstream &fptr)
               sizeof (this->width_));
   fptr.write (reinterpret_cast<const char *> (&this->height_),
               sizeof (this->height_));
+
+  if (fptr.fail ())
+    throw std::runtime_error (
+        "Error exporting pixel data header to output file.");
 }
 
-// FIXME: add error checking for file i/o
 void
 PixelData::export_data (std::ofstream &fptr)
 {
@@ -53,6 +57,9 @@ PixelData::export_data (std::ofstream &fptr)
           value |= (row.at (i + 2) << 8);
           value |= (row.at (i + 3) << 12);
           fptr.write (reinterpret_cast<char *> (&value), sizeof (value));
+          if (fptr.fail ())
+            throw std::runtime_error (
+                "Error exporting pixel data to output file.");
         }
     }
 }
