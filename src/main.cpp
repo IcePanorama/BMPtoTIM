@@ -1,7 +1,6 @@
 #include "bitmap_img.hpp"
 #include "screen_image_data.hpp"
 
-#include <format>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -13,9 +12,10 @@ main (void)
 
   try
     {
-      BitmapImage tmp (input_filename);
-      TIMImage tim (tmp.filename_, tmp.color_table, tmp.pixel_array, tmp.width,
-                    tmp.height);
+      BitmapImage input (input_filename);
+      TIMImage output (input.get_filename (), input.get_color_table (),
+                       input.get_pixel_array (), input.get_width (),
+                       input.get_height ());
     }
   catch (const std::runtime_error &e)
     {

@@ -2,11 +2,10 @@
 #include "utils.hpp"
 
 #include <format>
-#include <iostream>
 #include <stdexcept>
 
 BitmapImage::BitmapImage (const std::string &filename)
-    : file (filename, std::ios::binary), filename_ (filename)
+    : filename_ (filename), file (filename, std::ios::binary)
 {
   if (!file.is_open ())
     throw std::runtime_error (
@@ -66,4 +65,34 @@ BitmapImage::process_pixel_array (void)
 
       this->file.seekg (padding, std::ios_base::cur);
     }
+}
+
+const std::string &
+BitmapImage::get_filename (void) const
+{
+  return this->filename_;
+}
+
+const std::unordered_map<Color, uint8_t, ColorHasher_s> &
+BitmapImage::get_color_table (void) const
+{
+  return this->color_table;
+}
+
+const std::vector<std::vector<uint8_t> > &
+BitmapImage::get_pixel_array (void) const
+{
+  return this->pixel_array;
+}
+
+uint32_t
+BitmapImage::get_width (void) const
+{
+  return this->width;
+}
+
+uint32_t
+BitmapImage::get_height (void) const
+{
+  return this->height;
 }
