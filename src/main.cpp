@@ -15,7 +15,7 @@ main (void)
       BitmapImage input (input_filename);
       TIMImage output (input.get_filename (), input.get_color_table (),
                        input.get_pixel_array (), input.get_width (),
-                       input.get_height (), 0, 510, 320, 0);
+                       input.get_height ());
     }
   catch (const std::runtime_error &e)
     {

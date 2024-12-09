@@ -12,11 +12,11 @@ TIMImage::TIMImage (
     const std::string &filename,
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &pixel_array, uint16_t width,
-    uint16_t height, uint16_t clut_x, uint16_t clut_y, uint16_t pixel_array_x,
-    uint16_t pixel_array_y)
+    uint16_t height, uint16_t clut_x, uint16_t clut_y, uint16_t tpage_x,
+    uint16_t tpage_y)
     : filename_ (filename), file (), clut (color_table, clut_x, clut_y),
-      pixel_data (color_table, pixel_array, (width >> 2), height,
-                  pixel_array_x, pixel_array_y)
+      pixel_data (color_table, pixel_array, (width >> 2), height, tpage_x,
+                  tpage_y)
 {
   format_filename ();
 

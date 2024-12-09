@@ -40,12 +40,17 @@ class TIMImage
   void export_file_flags (void);
 
 public:
+  /**
+   *  If `clut_?`, `tpage_?` isn't provided, this defaults to beneath the
+   *  320x240 double buffers for the former and to the right of the double
+   *  buffers for the latter.
+   */
   TIMImage (
       const std::string &filename,
       const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
       const std::vector<std::vector<uint8_t> > &pixel_array, uint16_t width,
-      uint16_t height, uint16_t clut_x, uint16_t clut_y,
-      uint16_t pixel_array_x, uint16_t pixel_array_y);
+      uint16_t height, uint16_t clut_x = 0, uint16_t clut_y = 480,
+      uint16_t tpage_x = 320, uint16_t tpage_y = 0);
 };
 
 #endif /* _SCREEN_IMAGE_DATA_HPP_ */
