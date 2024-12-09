@@ -26,7 +26,7 @@ class ColorLookupTable
 public:
   ColorLookupTable (
       const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
-      uint16_t frame_buffer_x, uint16_t frame_buffer_y);
+      uint16_t clut_x, uint16_t clut_y);
 
   void export_clut (std::ofstream &fptr);
 };

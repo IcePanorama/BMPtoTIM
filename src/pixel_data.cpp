@@ -7,13 +7,13 @@
 PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
-    uint16_t height, uint16_t frame_buffer_x, uint16_t frame_buffer_y)
-    : color_table_ (color_table), data_ (data), x_pos_ (frame_buffer_x),
-      y_pos_ (frame_buffer_y), width_ (width), height_ (height)
+    uint16_t height, uint16_t tpage_x, uint16_t tpage_y)
+    : color_table_ (color_table), data_ (data), x_pos_ (tpage_x),
+      y_pos_ (tpage_y), width_ (width), height_ (height)
 {
   if (this->x_pos_ > FRAME_BUFFER_MAX_X_POSITION)
     throw std::runtime_error (
-        std::format ("ERROR: Given frame buffer x coordinate for the CLUT "
+        std::format ("ERROR: Given frame buffer x coordinate for the TPage "
                      "({:d}) is out of bounds [0..{:d}]",
                      this->x_pos_, FRAME_BUFFER_MAX_X_POSITION));
   else if (this->x_pos_ + this->width_ > FRAME_BUFFER_MAX_X_POSITION)
@@ -25,7 +25,7 @@ PixelData::PixelData (
   /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
   if (this->x_pos_ % PixelData::TPAGE_REQ_X_COORD_MULTIPLE != 0)
     throw std::runtime_error (std::format (
-        "ERROR: Given frame buffer x position {:d} is not a multiple of {:d}.",
+        "ERROR: Given TPage x position {:d} is not a multiple of {:d}.",
         this->x_pos_, PixelData::TPAGE_REQ_X_COORD_MULTIPLE));
 
   if (this->y_pos_ > FRAME_BUFFER_MAX_Y_POSITION)
@@ -42,7 +42,7 @@ PixelData::PixelData (
   /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
   if (this->y_pos_ % PixelData::TPAGE_REQ_Y_COORD_MULTIPLE != 0)
     throw std::runtime_error (std::format (
-        "ERROR: Given frame buffer y position {:d} is not a multiple of {:d}.",
+        "ERROR: Given TPage y position {:d} is not a multiple of {:d}.",
         this->x_pos_, PixelData::TPAGE_REQ_Y_COORD_MULTIPLE));
 }
 

@@ -10,9 +10,9 @@
 
 ColorLookupTable::ColorLookupTable (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
-    uint16_t frame_buffer_x, uint16_t frame_buffer_y)
-    : color_table_ (color_table), x_pos_ (frame_buffer_x),
-      y_pos_ (frame_buffer_y), width (16), height (1)
+    uint16_t clut_x, uint16_t clut_y)
+    : color_table_ (color_table), x_pos_ (clut_x), y_pos_ (clut_y), width (16),
+      height (1)
 {
   if (this->x_pos_ > FRAME_BUFFER_MAX_X_POSITION)
     throw std::runtime_error (
