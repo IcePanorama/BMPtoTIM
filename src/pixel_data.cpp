@@ -1,4 +1,5 @@
 #include "pixel_data.hpp"
+#include "frame_buffer.hpp"
 
 #include <format>
 #include <stdexcept>
@@ -10,14 +11,39 @@ PixelData::PixelData (
     : color_table_ (color_table), data_ (data), x_pos_ (frame_buffer_x),
       y_pos_ (frame_buffer_y), width_ (width), height_ (height)
 {
-  if (this->x_pos_ > 1023)
+  if (this->x_pos_ > FRAME_BUFFER_MAX_X_POSITION)
+    throw std::runtime_error (
+        std::format ("ERROR: Given frame buffer x coordinate for the CLUT "
+                     "({:d}) is out of bounds [0..{:d}]",
+                     this->x_pos_, FRAME_BUFFER_MAX_X_POSITION));
+  else if (this->x_pos_ + this->width_ > FRAME_BUFFER_MAX_X_POSITION)
     throw std::runtime_error (std::format (
-        "Error: given frame buffer x coordinate, {:d}, is out of bounds.",
+        "ERROR: TPage would reach out of bounds with given x position ({:d}) "
+        "and width ({:d}) [0..{:d}]",
+        this->x_pos_, this->width_, FRAME_BUFFER_MAX_X_POSITION));
+
+  /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
+  if (this->x_pos_ % 64 != 0)
+    throw std::runtime_error (std::format (
+        "ERROR: Given frame buffer x position {:d} is not a multiple of 64.",
         this->x_pos_));
-  if (this->y_pos_ > 511)
+
+  if (this->y_pos_ > FRAME_BUFFER_MAX_Y_POSITION)
+    throw std::runtime_error (
+        std::format ("ERROR: Given frame buffer y coordinate, {:d}, is out of "
+                     "bounds [0..{:d}]",
+                     this->y_pos_, FRAME_BUFFER_MAX_Y_POSITION));
+  else if (this->y_pos_ + this->height_ > FRAME_BUFFER_MAX_Y_POSITION)
     throw std::runtime_error (std::format (
-        "Error: given frame buffer y coordinate, {:d}, is out of bounds.",
-        this->y_pos_));
+        "ERROR: TPage would reach out of bounds with given y position ({:d}) "
+        "and height ({:d}) [0..{:d}]",
+        this->y_pos_, this->height_, FRAME_BUFFER_MAX_Y_POSITION));
+
+  /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
+  if (this->y_pos_ % 256 != 0)
+    throw std::runtime_error (std::format (
+        "ERROR: Given frame buffer y position {:d} is not a multiple of 256.",
+        this->x_pos_));
 }
 
 void
