@@ -14,9 +14,17 @@ BitmapImage::BitmapImage (const std::string &filename)
   this->validate_file ();
 
   this->file.seekg (BitmapImage::DATA_START_OFFSET_LOC);
+  if (this->file.fail () || this->file.eof ())
+    throw std::runtime_error (
+        "Failed to seek to location of input file's data start offset.");
+
   this->data_start = read_uint32_from_file (this->file);
 
   this->file.seekg (BitmapImage::BITMAP_DIMENSIONS_LOC);
+  if (this->file.fail () || this->file.eof ())
+    throw std::runtime_error (
+        "Failed to seek to location of input file dimensions.");
+
   this->width = read_uint32_from_file (this->file);
   this->height = read_uint32_from_file (this->file);
 
@@ -40,15 +48,18 @@ BitmapImage::validate_file ()
         "Error: The file, {}, is not a bitmap image.", this->filename_));
 }
 
-// FIXME: add error check around file i/o
 void
 BitmapImage::process_pixel_array (void)
 {
   this->file.seekg (this->data_start);
+  if (this->file.fail () || this->file.eof ())
+    throw std::runtime_error (
+        "Failed to seek to location of pixel data array.");
 
-  uint32_t padding
+  const uint32_t PADDING
       = this->row_size - (this->width * BitmapImage::BYTES_PER_PIXEL);
 
+  // Bitmaps start from bottom left corner so we're doing this in reverse.
   for (auto it = this->pixel_array.rbegin (); it != this->pixel_array.rend ();
        it++)
     {
@@ -64,7 +75,9 @@ BitmapImage::process_pixel_array (void)
           it->push_back (this->color_table.at (c));
         }
 
-      this->file.seekg (padding, std::ios_base::cur);
+      this->file.seekg (PADDING, std::ios_base::cur);
+      if (this->file.fail () || this->file.eof ())
+        throw std::runtime_error ("Error seeking through pixel array data.");
     }
 }
 
