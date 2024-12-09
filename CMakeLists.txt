@@ -30,6 +30,7 @@ set(INCL_FILES
     "${INCL_DIR}/bitmap_img.hpp"
     "${INCL_DIR}/color.hpp"
     "${INCL_DIR}/color_lookup_table.hpp"
+    "${INCL_DIR}/frame_buffer.hpp"
     "${INCL_DIR}/screen_image_data.hpp"
     "${INCL_DIR}/pixel_data.hpp"
     "${INCL_DIR}/utils.hpp"

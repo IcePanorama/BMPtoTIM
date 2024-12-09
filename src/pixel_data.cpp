@@ -1,17 +1,23 @@
 #include "pixel_data.hpp"
 
+#include <format>
 #include <stdexcept>
 
 PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
-    uint16_t height) noexcept : color_table_ (color_table),
-                                data_ (data),
-                                x_pos_ (320),
-                                y_pos_ (1),
-                                width_ (width),
-                                height_ (height)
+    uint16_t height, uint16_t frame_buffer_x, uint16_t frame_buffer_y)
+    : color_table_ (color_table), data_ (data), x_pos_ (frame_buffer_x),
+      y_pos_ (frame_buffer_y), width_ (width), height_ (height)
 {
+  if (this->x_pos_ > 1023)
+    throw std::runtime_error (std::format (
+        "Error: given frame buffer x coordinate, {:d}, is out of bounds.",
+        this->x_pos_));
+  if (this->y_pos_ > 511)
+    throw std::runtime_error (std::format (
+        "Error: given frame buffer y coordinate, {:d}, is out of bounds.",
+        this->y_pos_));
 }
 
 void

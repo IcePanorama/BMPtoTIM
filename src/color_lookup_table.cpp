@@ -1,18 +1,46 @@
 #include "color_lookup_table.hpp"
+#include "frame_buffer.hpp"
 #include "utils.hpp"
 
 #include <algorithm>
+#include <format>
 #include <numeric>
+#include <stdexcept>
 #include <vector>
 
 ColorLookupTable::ColorLookupTable (
-    const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table)
-    noexcept : color_table_ (color_table),
-               x_pos_ (320),
-               y_pos_ (0),
-               width (16),
-               height (1)
+    const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
+    uint16_t frame_buffer_x, uint16_t frame_buffer_y)
+    : color_table_ (color_table), x_pos_ (frame_buffer_x),
+      y_pos_ (frame_buffer_y), width (16), height (1)
 {
+  if (this->x_pos_ > FRAME_BUFFER_MAX_X_POSITION)
+    throw std::runtime_error (
+        std::format ("ERROR: Given frame buffer x coordinate for the CLUT "
+                     "({:d}) is out of bounds [0..{:d}]",
+                     this->x_pos_, FRAME_BUFFER_MAX_X_POSITION));
+  else if (this->x_pos_ + this->width > FRAME_BUFFER_MAX_X_POSITION)
+    throw std::runtime_error (std::format (
+        "ERROR: CLUT would reach out of bounds with given x position ({:d}) "
+        "and width ({:d}) [0..{:d}]",
+        this->x_pos_, this->width, FRAME_BUFFER_MAX_X_POSITION));
+
+  /** see: "GetClut", PSX Run-Time Library Reference, pg. 295. */
+  if (this->x_pos_ % 16 != 0)
+    throw std::runtime_error (std::format (
+        "ERROR: Given frame buffer x position {:d} is not a multiple of 16.",
+        this->x_pos_));
+
+  if (this->y_pos_ > FRAME_BUFFER_MAX_Y_POSITION)
+    throw std::runtime_error (
+        std::format ("ERROR: Given frame buffer y coordinate, {:d}, is out of "
+                     "bounds [0..{:d}]",
+                     this->y_pos_, FRAME_BUFFER_MAX_Y_POSITION));
+  else if (this->y_pos_ + this->height > FRAME_BUFFER_MAX_Y_POSITION)
+    throw std::runtime_error (std::format (
+        "ERROR: CLUT would reach out of bounds with given y position ({:d}) "
+        "and height ({:d}) [0..{:d}]",
+        this->y_pos_, this->height, FRAME_BUFFER_MAX_Y_POSITION));
 }
 
 void
@@ -27,7 +55,7 @@ ColorLookupTable::export_clut_header (std::ofstream &fptr)
 {
   // TODO: expand to support other more colors.
   if (this->color_table_.size () > 16)
-    throw std::runtime_error ("Error: More than 16 colors found.");
+    throw std::runtime_error ("ERROR: More than 16 colors found.");
 
   // Two colors = 32 bits, 4-bit CLUT has 16 entries.
   const uint32_t clut_size
@@ -47,14 +75,14 @@ ColorLookupTable::export_clut_header (std::ofstream &fptr)
               sizeof (clut_height));
 
   if (fptr.fail ())
-    throw std::runtime_error ("Error exporting CLUT header.");
+    throw std::runtime_error ("ERROR: Error exporting CLUT header.");
 }
 
 void
 ColorLookupTable::create_clut_entries (std::ofstream &fptr)
 {
   static const Color TRANSPARENCY (0xFF, 0x00, 0xFF);
-  constexpr const char *ERR_MSG = "Error exporting CLUT entries.";
+  constexpr const char *ERR_MSG = "ERROR: Error exporting CLUT entries.";
 
   // Extract key-values from color table
   std::vector<Color> keys;
