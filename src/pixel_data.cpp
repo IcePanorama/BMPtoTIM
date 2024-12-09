@@ -23,10 +23,10 @@ PixelData::PixelData (
         this->x_pos_, this->width_, FRAME_BUFFER_MAX_X_POSITION));
 
   /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
-  if (this->x_pos_ % 64 != 0)
+  if (this->x_pos_ % PixelData::TPAGE_REQ_X_COORD_MULTIPLE != 0)
     throw std::runtime_error (std::format (
-        "ERROR: Given frame buffer x position {:d} is not a multiple of 64.",
-        this->x_pos_));
+        "ERROR: Given frame buffer x position {:d} is not a multiple of {:d}.",
+        this->x_pos_, PixelData::TPAGE_REQ_X_COORD_MULTIPLE));
 
   if (this->y_pos_ > FRAME_BUFFER_MAX_Y_POSITION)
     throw std::runtime_error (
@@ -40,10 +40,10 @@ PixelData::PixelData (
         this->y_pos_, this->height_, FRAME_BUFFER_MAX_Y_POSITION));
 
   /** see: "GetTPage", PSX Run-Time Library Reference, pg. 306. */
-  if (this->y_pos_ % 256 != 0)
+  if (this->y_pos_ % PixelData::TPAGE_REQ_Y_COORD_MULTIPLE != 0)
     throw std::runtime_error (std::format (
-        "ERROR: Given frame buffer y position {:d} is not a multiple of 256.",
-        this->x_pos_));
+        "ERROR: Given frame buffer y position {:d} is not a multiple of {:d}.",
+        this->x_pos_, PixelData::TPAGE_REQ_Y_COORD_MULTIPLE));
 }
 
 void

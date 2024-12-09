@@ -9,6 +9,7 @@
 
 class ColorLookupTable
 {
+  static constexpr uint16_t CLUT_REQ_X_COORD_MULTIPLE = 16;
   /** see: pg. 183, "TIM: Screen Image Data", in 'File Formats'. */
   static constexpr uint32_t CLUT_HEADER_SIZE = sizeof (uint32_t) * 3;
 

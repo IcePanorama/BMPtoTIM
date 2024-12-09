@@ -26,10 +26,10 @@ ColorLookupTable::ColorLookupTable (
         this->x_pos_, this->width, FRAME_BUFFER_MAX_X_POSITION));
 
   /** see: "GetClut", PSX Run-Time Library Reference, pg. 295. */
-  if (this->x_pos_ % 16 != 0)
+  if (this->x_pos_ % ColorLookupTable::CLUT_REQ_X_COORD_MULTIPLE != 0)
     throw std::runtime_error (std::format (
-        "ERROR: Given frame buffer x position {:d} is not a multiple of 16.",
-        this->x_pos_));
+        "ERROR: Given frame buffer x position {:d} is not a multiple of {:d}.",
+        this->x_pos_, ColorLookupTable::CLUT_REQ_X_COORD_MULTIPLE));
 
   if (this->y_pos_ > FRAME_BUFFER_MAX_Y_POSITION)
     throw std::runtime_error (

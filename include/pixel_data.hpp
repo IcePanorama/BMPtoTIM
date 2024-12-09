@@ -10,6 +10,8 @@
 
 class PixelData
 {
+  static constexpr uint16_t TPAGE_REQ_X_COORD_MULTIPLE = 64;
+  static constexpr uint16_t TPAGE_REQ_Y_COORD_MULTIPLE = 256;
   static constexpr uint32_t PIXEL_DATA_HEADER_SIZE = sizeof (uint32_t) * 3;
 
   const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table_;
