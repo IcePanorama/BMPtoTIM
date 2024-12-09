@@ -1,8 +1,5 @@
 #include "pixel_data.hpp"
 
-#include <cstdint>
-#include <iostream>
-
 PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
