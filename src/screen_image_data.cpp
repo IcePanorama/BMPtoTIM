@@ -44,7 +44,6 @@ TIMImage::format_filename () noexcept
   this->filename_.append (".TIM");
 }
 
-// FIXME: add error checking around file i/o
 void
 TIMImage::create_file_header (void)
 {
@@ -52,13 +51,19 @@ TIMImage::create_file_header (void)
                     sizeof (TIMImage::ID_VALUE));
   this->file.write (reinterpret_cast<const char *> (&TIMImage::VERSION_NUMBER),
                     sizeof (TIMImage::VERSION_NUMBER));
+  if (this->file.fail ())
+    throw std::runtime_error ("Error creating output file header.");
+
   this->file.seekp (0x2, std::ios::cur);
+  if (this->file.fail ())
+    throw std::runtime_error ("Error advancing past output file header.");
 }
 
-// FIXME: add error checking around file i/o
 void
 TIMImage::export_file_flags (void)
 {
   uint32_t flags = TIMImage::PIXEL_MODE | (1 << (CLUT_FLAG_BIT));
   this->file.write (reinterpret_cast<char *> (&flags), sizeof (flags));
+  if (this->file.fail ())
+    throw std::runtime_error ("Error writing file flags to output file.");
 }
