@@ -23,8 +23,8 @@ class ColorLookupTable
   void create_clut_entries (std::ofstream &fptr);
 
 public:
-  ColorLookupTable (
-      const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table);
+  ColorLookupTable (const std::unordered_map<Color, uint8_t, ColorHasher_s>
+                        &color_table) noexcept;
 
   void export_clut (std::ofstream &fptr);
 };

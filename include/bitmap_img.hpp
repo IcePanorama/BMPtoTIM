@@ -40,12 +40,13 @@ class BitmapImage
 public:
   BitmapImage (const std::string &filename);
 
-  const std::string &get_filename (void) const;
+  const std::string &get_filename (void) const noexcept;
   const std::unordered_map<Color, uint8_t, ColorHasher_s> &
-  get_color_table (void) const;
-  const std::vector<std::vector<uint8_t> > &get_pixel_array (void) const;
-  uint32_t get_width (void) const;
-  uint32_t get_height (void) const;
+  get_color_table (void) const noexcept;
+  const std::vector<std::vector<uint8_t> > &
+  get_pixel_array (void) const noexcept;
+  uint32_t get_width (void) const noexcept;
+  uint32_t get_height (void) const noexcept;
 };
 
 #endif /* _BITMAP_IMAGE_HPP_ */

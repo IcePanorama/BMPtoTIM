@@ -7,8 +7,11 @@
 
 ColorLookupTable::ColorLookupTable (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table)
-    : color_table_ (color_table), x_pos_ (320), y_pos_ (0), width (16),
-      height (1)
+    noexcept : color_table_ (color_table),
+               x_pos_ (320),
+               y_pos_ (0),
+               width (16),
+               height (1)
 {
 }
 
@@ -19,6 +22,7 @@ ColorLookupTable::export_clut (std::ofstream &fptr)
   this->create_clut_entries (fptr);
 }
 
+// FIXME: add error checking around file i/o
 void
 ColorLookupTable::export_clut_header (std::ofstream &fptr)
 {
@@ -44,6 +48,7 @@ ColorLookupTable::export_clut_header (std::ofstream &fptr)
               sizeof (clut_height));
 }
 
+// FIXME: add error checking around file i/o
 void
 ColorLookupTable::create_clut_entries (std::ofstream &fptr)
 {

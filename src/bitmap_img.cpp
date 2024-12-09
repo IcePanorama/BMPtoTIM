@@ -40,6 +40,7 @@ BitmapImage::validate_file ()
         "Error: The file, {}, is not a bitmap image.", this->filename_));
 }
 
+// FIXME: add error check around file i/o
 void
 BitmapImage::process_pixel_array (void)
 {
@@ -68,31 +69,31 @@ BitmapImage::process_pixel_array (void)
 }
 
 const std::string &
-BitmapImage::get_filename (void) const
+BitmapImage::get_filename (void) const noexcept
 {
   return this->filename_;
 }
 
 const std::unordered_map<Color, uint8_t, ColorHasher_s> &
-BitmapImage::get_color_table (void) const
+BitmapImage::get_color_table (void) const noexcept
 {
   return this->color_table;
 }
 
 const std::vector<std::vector<uint8_t> > &
-BitmapImage::get_pixel_array (void) const
+BitmapImage::get_pixel_array (void) const noexcept
 {
   return this->pixel_array;
 }
 
 uint32_t
-BitmapImage::get_width (void) const
+BitmapImage::get_width (void) const noexcept
 {
   return this->width;
 }
 
 uint32_t
-BitmapImage::get_height (void) const
+BitmapImage::get_height (void) const noexcept
 {
   return this->height;
 }

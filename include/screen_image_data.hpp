@@ -35,7 +35,7 @@ class TIMImage
    *  Makes the given filename comform to the 8.3 standard, changes the file
    *  extention to TIM.
    */
-  void format_filename (void);
+  void format_filename (void) noexcept;
   void create_file_header (void);
   void export_file_flags (void);
 

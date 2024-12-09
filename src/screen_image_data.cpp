@@ -31,7 +31,7 @@ TIMImage::TIMImage (
 }
 
 void
-TIMImage::format_filename ()
+TIMImage::format_filename () noexcept
 {
   if (this->filename_.length () > 8)
     this->filename_ = this->filename_.substr (0, 8);
@@ -44,6 +44,7 @@ TIMImage::format_filename ()
   this->filename_.append (".TIM");
 }
 
+// FIXME: add error checking around file i/o
 void
 TIMImage::create_file_header (void)
 {
@@ -54,6 +55,7 @@ TIMImage::create_file_header (void)
   this->file.seekp (0x2, std::ios::cur);
 }
 
+// FIXME: add error checking around file i/o
 void
 TIMImage::export_file_flags (void)
 {

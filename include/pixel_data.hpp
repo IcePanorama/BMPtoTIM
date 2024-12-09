@@ -27,7 +27,7 @@ public:
   PixelData (
       const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
       const std::vector<std::vector<uint8_t> > &data, uint16_t width,
-      uint16_t height);
+      uint16_t height) noexcept;
 
   void export_pixel_data (std::ofstream &fptr);
 };

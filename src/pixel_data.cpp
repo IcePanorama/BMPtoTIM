@@ -3,9 +3,12 @@
 PixelData::PixelData (
     const std::unordered_map<Color, uint8_t, ColorHasher_s> &color_table,
     const std::vector<std::vector<uint8_t> > &data, uint16_t width,
-    uint16_t height)
-    : color_table_ (color_table), data_ (data), x_pos_ (320), y_pos_ (1),
-      width_ (width), height_ (height)
+    uint16_t height) noexcept : color_table_ (color_table),
+                                data_ (data),
+                                x_pos_ (320),
+                                y_pos_ (1),
+                                width_ (width),
+                                height_ (height)
 {
 }
 
@@ -16,13 +19,13 @@ PixelData::export_pixel_data (std::ofstream &fptr)
   this->export_data (fptr);
 }
 
+// FIXME: add error checking for file i/o
 void
 PixelData::export_header (std::ofstream &fptr)
 {
   const uint32_t pixel_data_size
       = PixelData::PIXEL_DATA_HEADER_SIZE
         + sizeof (uint16_t) * this->height_ * this->width_;
-  // FIXME: need to add checks for failures more often when doing file io
   fptr.write (reinterpret_cast<const char *> (&pixel_data_size),
               sizeof (pixel_data_size));
 
@@ -37,6 +40,7 @@ PixelData::export_header (std::ofstream &fptr)
               sizeof (this->height_));
 }
 
+// FIXME: add error checking for file i/o
 void
 PixelData::export_data (std::ofstream &fptr)
 {
