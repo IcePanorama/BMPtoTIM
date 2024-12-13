@@ -23,7 +23,7 @@ read_color_from_file (std::ifstream &f)
   std::array<uint8_t, 3> bytes;
   f.read (reinterpret_cast<char *> (bytes.data ()), bytes.size ());
   if (f.fail ())
-    throw std::runtime_error ("Error reading uint32_t from file.");
+    throw std::runtime_error ("Error reading color from file.");
 
   return Color (bytes.at (2), bytes.at (1), bytes.at (0));
 }
