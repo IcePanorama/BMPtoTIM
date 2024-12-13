@@ -1,14 +1,19 @@
 #include "bitmap_img.hpp"
 #include "screen_image_data.hpp"
 
+#include <format>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
 int
-main (void)
+main (int argc, char **argv)
 {
-  const std::string input_filename = "font.bmp";
+  if (argc < 2)
+    throw std::runtime_error (std::format (
+        "Improper usage error: try {} path/to/file.bmp\n", argv[0]));
+
+  const std::string input_filename = argv[1];
 
   try
     {
